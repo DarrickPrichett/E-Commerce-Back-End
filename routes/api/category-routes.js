@@ -4,25 +4,88 @@ const { Category, Product } = require('../../models');
 // The `/api/categories` endpoint
 
 router.get('/', (req, res) => {
-  // find all categories
-  // be sure to include its associated Products
+  // Access our User model and run .findAll() method)
+  Category.findAll({
+    include: [Product]
+  })
+    .then(category => res.json(category))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 router.get('/:id', (req, res) => {
-  // find one category by its `id` value
-  // be sure to include its associated Products
+  Category.findOne({
+    attributes: { exclude: ['password'] },
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(Product => {
+      if (!Product) {
+        res.status(404).json({ message: 'No user found with this id' });
+        return;
+      }
+      res.json(Product);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 router.post('/', (req, res) => {
-  // create a new category
+  Category.create({
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password
+  })
+    .then(dbUserData => res.json(Product))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 router.put('/:id', (req, res) => {
-  // update a category by its `id` value
+  // if req.body has exact key/value pairs to match the model, you can just use `req.body` instead
+  Category.update(req.body, {
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(Product => {
+      if (!Product[0]) {
+        res.status(404).json({ message: 'No user found with this id' });
+        return;
+      }
+      res.json(Product);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
+
 router.delete('/:id', (req, res) => {
-  // delete a category by its `id` value
+  Category.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(Product => {
+      if (!Product) {
+        res.status(404).json({ message: 'No user found with this id' });
+        return;
+      }
+      res.json(Product);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 module.exports = router;
