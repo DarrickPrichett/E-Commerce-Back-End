@@ -12,9 +12,11 @@ router.get('/', (req, res) => {
       model: Category,
       foreignKey: 'category_id'
     },
-  {model: Tag,
-  through: ProductTag, 
-  foreignKey: 'tag_id'}]
+    {
+      model: Tag,
+      through: ProductTag,
+      foreignKey: 'tag_id'
+    }]
   })
     .then(productData => res.json(productData))
     .catch(err => {
