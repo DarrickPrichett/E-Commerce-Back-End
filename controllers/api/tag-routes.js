@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
   Tag.findAll({
     include: [Product]
   })
-    .then(tag => res.json(category))
+    .then(tag => res.json(tag))
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
@@ -43,7 +43,7 @@ router.post('/', (req, res) => {
   Tag.create({
     tag_name: req.body.username,
   })
-    .then(dbUserData => res.json(Product))
+    .then(dbUserData => res.json(dbUserData))
     .catch(err => {
       console.log(err);
       res.status(500).json(err);

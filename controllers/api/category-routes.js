@@ -22,12 +22,12 @@ router.get('/:id', (req, res) => {
       id: req.params.id
     }
   })
-    .then(Product => {
-      if (!Product) {
+    .then(product => {
+      if (!product) {
         res.status(404).json({ message: 'No user found with this id' });
         return;
       }
-      res.json(Product);
+      res.json(product);
     })
     .catch(err => {
       console.log(err);
@@ -37,11 +37,9 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   Category.create({
-    username: req.body.username,
-    email: req.body.email,
-    password: req.body.password
+    category_name: req.body.category_name
   })
-    .then(dbUserData => res.json(Product))
+    .then(dbUserData => res.json(dbUserData))
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
